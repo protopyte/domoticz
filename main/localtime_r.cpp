@@ -2,6 +2,7 @@
 #include "localtime_r.h"
 
 time_t m_lasttime=time(NULL);
+boost::mutex TimeMutex_;
 
 #ifndef localtime_r
 struct tm *localtime_r(const time_t *timep, struct tm *result)
@@ -9,10 +10,11 @@ struct tm *localtime_r(const time_t *timep, struct tm *result)
 #ifdef localtime_s
 	localtime_s(timep, result);
 #else
-	struct tm *s = localtime (timep);
+	boost::lock_guard<boost::mutex> l(TimeMutex_);
+	struct tm *s = localtime(timep);
 	if (s == NULL)
 		return NULL;
-	*result = *s;
+	memcpy(result, s, sizeof(struct tm));
 #endif
 	return result;
 }

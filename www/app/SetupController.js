@@ -57,7 +57,7 @@ define(['app'], function (app) {
 				extraparams = "HTTPField1=" + HTTPField1 + "&HTTPField2=" + HTTPField2 + "&HTTPField3=" + HTTPField3 + "&HTTPField4=" + HTTPField4 + "&HTTPTo=" + HTTPTo + "&HTTPURL=" + HTTPURL;
 				break;
 			case "prowl":
-				var ProwlAPI=encodeURIComponent($("#prowltable #apikey").val());
+				var ProwlAPI=encodeURIComponent($("#prowltable #ProwlAPI").val());
 				if (ProwlAPI=="") {
 					ShowNotify($.t('Please enter the API key!...'), 3500, true);
 					return;
@@ -65,7 +65,7 @@ define(['app'], function (app) {
 				extraparams = "ProwlAPI=" + ProwlAPI;
 				break;
 			case "nma":
-				var NMAAPI=encodeURIComponent($("#nmatable #apikey").val());
+				var NMAAPI=encodeURIComponent($("#nmatable #NMAAPI").val());
 				if (NMAAPI=="") {
 					ShowNotify($.t('Please enter the API key!...'), 3500, true);
 					return;
@@ -73,7 +73,7 @@ define(['app'], function (app) {
 				extraparams = "NMAAPI=" + NMAAPI;
 				break;
 			case "pushover":
-				var POAPI=encodeURIComponent($("#pushovertable #apikey").val());
+				var POAPI=encodeURIComponent($("#pushovertable #PushoverAPI").val());
 				if (POAPI=="") {
 					ShowNotify($.t('Please enter the API key!...'), 3500, true);
 					return;
@@ -86,7 +86,7 @@ define(['app'], function (app) {
 				extraparams = "POAPI=" + POAPI + "&POUSERID=" + POUSERID;
 				break;
 			case "pushalot":
-				var PushAlotAPI=encodeURIComponent($("#pushalottable #palapikey").val());
+				var PushAlotAPI=encodeURIComponent($("#pushalottable #PushALotAPI").val());
 				if (PushAlotAPI=="") {
 					ShowNotify($.t('Please enter the API key!...'), 3500, true);
 					return;
@@ -121,7 +121,7 @@ define(['app'], function (app) {
 			case "kodi":
 				if ($("#koditable #KodiIPAddress").val() == "") $("#koditable #KodiIPAddress").val("224.0.0.1");
 				if (($("#koditable #KodiPort").val() == "") || !$.isNumeric($("#koditable #KodiPort").val())) $("#koditable #KodiPort").val("9777");
-				if (($("#koditable #KodiTimeToLive").val() == "") || !$.isNumeric($("#koditable #KodiTimeToLive").val())) $("#koditable #KodiTimeToLive").val("1");
+				if (($("#koditable #KodiTimeToLive").val() == "") || !$.isNumeric($("#koditable #KodiTimeToLive").val())) $("#koditable #KodiTimeToLive").val("5");
 				extraparams = 'KodiIPAddress=' + $("#koditable #KodiIPAddress").val() + '&KodiPort=' + $("#koditable #KodiPort").val() + "&KodiTimeToLive=" + $("#koditable #KodiTimeToLive").val();
 				break;
 			default:
@@ -285,7 +285,7 @@ define(['app'], function (app) {
 			  if (typeof data.KodiPort != 'undefined') {
 				$("#koditable #KodiPort").val(data.KodiPort);
 			  }
-			  $("#koditable #KodiTimeToLive").val("1");
+			  $("#koditable #KodiTimeToLive").val("5");
 			  if (typeof data.KodiTimeToLive != 'undefined') {
 				$("#koditable #KodiTimeToLive").val(data.KodiTimeToLive);
 			  }

@@ -89,18 +89,18 @@ void CLogger::Log(const _eLogLevel level, const char* logline, ...)
 	// Get a timestamp
 	struct timeval tv;
 	gettimeofday(&tv, NULL);
-	struct tm *tm;
-	tm = localtime(&tv.tv_sec);
+
+	struct tm timeinfo;
+	localtime_r(&tv.tv_sec, &timeinfo);
 
 	// create a time stamp string for the log message
 	snprintf(szDate, sizeof(szDate), "%04d-%02d-%02d %02d:%02d:%02d.%03d ",
-		tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday,
-		tm->tm_hour, tm->tm_min, tm->tm_sec, (int)tv.tv_usec / 1000);
+		timeinfo.tm_year + 1900, timeinfo.tm_mon + 1, timeinfo.tm_mday,
+		timeinfo.tm_hour, timeinfo.tm_min, timeinfo.tm_sec, (int)tv.tv_usec / 1000);
 #else
 	// Get a timestamp
 	SYSTEMTIME time;
 	::GetLocalTime(&time);
-
 	// create a time stamp string for the log message
 	sprintf_s(szDate, sizeof(szDate), "%04d-%02d-%02d %02d:%02d:%02d.%03d ", time.wYear, time.wMonth, time.wDay, time.wHour, time.wMinute, time.wSecond, time.wMilliseconds);
 #endif

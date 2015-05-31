@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "../main/Logger.h"
+#include "../main/localtime_r.h"
 
 //Part of this class is written by Sebastian John
 /***************************************************************************
@@ -430,10 +431,12 @@ int CTE923Tool::get_te923_memdata( Te923DataSet_t *data )
 	} else
 		adr = data->__src;
 
-	time_t tm = time( NULL );
-	struct tm *timeinfo = localtime( &tm );
-	int sysyear = timeinfo->tm_year;
-	int sysmon = timeinfo->tm_mon;
+	time_t tm = mytime( NULL );
+	struct tm timeinfo;
+	localtime_r(&tm, &timeinfo);
+
+	int sysyear = timeinfo.tm_year;
+	int sysmon = timeinfo.tm_mon;
 	unsigned char readretries=0;
 	do
 	{

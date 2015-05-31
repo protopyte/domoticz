@@ -1985,7 +1985,6 @@ namespace http {
 						localtime_r(&pNode->m_LastSeen, &loctime);
 						strftime(szDate, 80, "%Y-%m-%d %X", &loctime);
 
-						//char *szDate = asctime(localtime(&pNode->m_LastSeen));
 						root["result"][ii]["LastUpdate"] = szDate;
 
 						//Add configuration parameters here
@@ -2039,7 +2038,7 @@ namespace http {
 				{
 					COpenZWave *pOZWHardware = (COpenZWave*)pHardware;
 					pOZWHardware->SetNodeName(homeID, nodeID, name);
-					pOZWHardware->EnableDisableNodePolling();
+					pOZWHardware->EnableDisableNodePolling(nodeID);
 				}
 			}
 		}
@@ -11394,7 +11393,7 @@ namespace http {
 						if (pHardware->HwdType == HTYPE_OpenZWave)
 						{
 							COpenZWave *pOZWHardware = (COpenZWave*)pHardware;
-							root["result"][ii]["version"] = pOZWHardware->GetVersion();
+							root["result"][ii]["version"] = pOZWHardware->GetVersionLong();
 							root["result"][ii]["NodesQueried"] = (pOZWHardware->m_awakeNodesQueried || pOZWHardware->m_allNodesQueried);
 						}
 					}
@@ -12749,7 +12748,11 @@ namespace http {
 					root["result"][ii]["Temperature"] = szTemp;
 				}
 				root["result"][ii]["Days"] = itt->Days;
-				char *pDate = asctime(localtime(&itt->startTime));
+
+				struct tm timeinfo;
+				localtime_r(&itt->startTime, &timeinfo);
+
+				char *pDate = asctime(&timeinfo);
 				if (pDate != NULL)
 				{
 					pDate[strlen(pDate) - 1] = 0;

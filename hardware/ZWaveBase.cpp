@@ -5,6 +5,7 @@
 #include <sstream>      // std::stringstream
 #include <vector>
 #include <ctype.h>
+#include <iomanip>
 
 #include "../main/Helper.h"
 #include "../main/RFXtrx.h"
@@ -1057,6 +1058,7 @@ bool ZWaveBase::WriteToHardware(const char *pdata, const unsigned char length)
 			pDevice = FindDevice(nodeID, instanceID, indexID, ZDTYPE_SWITCH_COLOR);
 			if (pDevice)
 			{
+				std::stringstream sstr;
 				int svalue = 0;
 				if (pLed->command == Limitless_LedOff)
 				{
@@ -1081,40 +1083,30 @@ bool ZWaveBase::WriteToHardware(const char *pdata, const unsigned char length)
 				}
 				else if (pLed->command == Limitless_SetColorToWhite)
 				{
-					unsigned char colbuf[8];
-					int iIndex = 0;
-					//colbuf[iIndex++] = 0x02;//red
-					//colbuf[iIndex++] = 0;
-					//colbuf[iIndex++] = 0x03;//green
-					//colbuf[iIndex++] = 0;
-					//colbuf[iIndex++] = 0x04;//blue
-					//colbuf[iIndex++] = 0;
-					colbuf[iIndex++] = 0x00;//warm light
-					colbuf[iIndex++] = 255;
+					int wValue = 255;
+					sstr << "#000000" << std::setw(2) << std::uppercase << std::hex << std::setfill('0') << std::hex << wValue << "00";
 					instanceID = 1;
-					return SwitchColor(nodeID, instanceID, COMMAND_CLASS_COLOR_CONTROL, colbuf, iIndex);
+					return SwitchColor(nodeID, instanceID, COMMAND_CLASS_COLOR_CONTROL, sstr.str());
 				}
 				else if (pLed->command == Limitless_SetRGBColour)
 				{
 					int red, green, blue;
 					float cHue = (360.0f / 255.0f)*float(pLed->value);//hue given was in range of 0-255
-					hue2rgb(cHue, red, green, blue,255);
+
+					int Brightness = 100;
+
+					int dMax = round((255.0f / 100.0f)*float(Brightness));
+					hue2rgb(cHue, red, green, blue, dMax);
 					instanceID = 1;
 
-					unsigned char colbuf[10];
-					int iIndex = 0;
-					colbuf[iIndex++] = 0x00;//warm light
-					colbuf[iIndex++] = 0;
-					colbuf[iIndex++] = 0x01;//cold light
-					colbuf[iIndex++] = 0;
-					colbuf[iIndex++] = 0x02;//red
-					colbuf[iIndex++] = (unsigned char)red;
-					colbuf[iIndex++] = 0x03;//green
-					colbuf[iIndex++] = (unsigned char)green;
-					colbuf[iIndex++] = 0x04;//blue
-					colbuf[iIndex++] = (unsigned char)blue;
+					sstr << "#"
+						<< std::setw(2) << std::uppercase << std::hex << std::setfill('0') << std::hex << red
+						<< std::setw(2) << std::uppercase << std::hex << std::setfill('0') << std::hex << green
+						<< std::setw(2) << std::uppercase << std::hex << std::setfill('0') << std::hex << blue;
 
-					if (!SwitchColor(nodeID, instanceID, COMMAND_CLASS_COLOR_CONTROL, colbuf, iIndex))
+					std::string sColor = sstr.str();
+
+					if (!SwitchColor(nodeID, instanceID, COMMAND_CLASS_COLOR_CONTROL, sColor))
 						return false;
 
 					_log.Log(LOG_NORM, "Red: %03d, Green:%03d, Blue:%03d", red, green, blue);

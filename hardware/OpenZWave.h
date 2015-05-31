@@ -81,14 +81,15 @@ public:
 	bool GetUpdates();
 	void OnZWaveNotification( OpenZWave::Notification const* _notification);
 	void OnZWaveDeviceStatusUpdate(int cs, int err);
-	void EnableDisableNodePolling();
+	void EnableDisableNodePolling(int NodeID);
 	void SetNodeName(const unsigned int homeID, const int nodeID, const std::string &Name);
 	std::string GetNodeStateString(const unsigned int homeID, const int nodeID);
 	void GetNodeValuesJson(const unsigned int homeID, const int nodeID, Json::Value &root, const int index);
-	NodeInfo* GetNodeInfo( const unsigned int homeID, const int nodeID );
 	bool ApplyNodeConfig(const unsigned int homeID, const int nodeID, const std::string &svaluelist);
+	NodeInfo* GetNodeInfo(const unsigned int homeID, const int nodeID);
 
 	std::string GetVersion();
+	std::string GetVersionLong();
 
 	bool SetUserCodeEnrollmentMode();
 	bool GetNodeUserCodes(const unsigned int homeID, const int nodeID, Json::Value &root);
@@ -126,7 +127,7 @@ public:
 
 	unsigned char m_controllerNodeId;
 private:
-	void NodesQueried();
+	void NodeQueried(int NodeID);
 	void DeleteNode(const unsigned int homeID, const int nodeID);
 	void AddNode(const unsigned int homeID, const int nodeID,const NodeInfo *pNode);
 	void EnableNodePoll(const unsigned int homeID, const int nodeID, const int pollTime);
@@ -138,9 +139,8 @@ private:
 	void UpdateValue(const OpenZWave::ValueID &vID);
 	void UpdateNodeEvent(const OpenZWave::ValueID &vID, int EventID);
 	void UpdateNodeScene(const OpenZWave::ValueID &vID, int SceneID);
-	NodeInfo* GetNodeInfo( OpenZWave::Notification const* _notification );
 	bool SwitchLight(const int nodeID, const int instanceID, const int commandClass, const int value);
-	bool SwitchColor(const int nodeID, const int instanceID, const int commandClass, const unsigned char *colvalues, const unsigned char valuelen);
+	bool SwitchColor(const int nodeID, const int instanceID, const int commandClass, const std::string &ColorStr);
 	void SetThermostatSetPoint(const int nodeID, const int instanceID, const int commandClass, const float value);
 	void SetClock(const int nodeID, const int instanceID, const int commandClass, const int day, const int hour, const int minute);
 	void SetThermostatMode(const int nodeID, const int instanceID, const int commandClass, const int tMode);
@@ -154,8 +154,6 @@ private:
 
 	bool OpenSerialConnector();
 	void CloseSerialConnector();
-
-	const char *GetControllerErrorStr(OpenZWave::Driver::ControllerError err);
 
 	void WriteControllerConfig();
 	time_t m_LastControllerConfigWrite;
