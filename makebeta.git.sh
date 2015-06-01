@@ -88,7 +88,7 @@ GIT_REMOTE_DEV_HASH_AFTER="$(git rev-parse origin/develop)"
 echo "git loc dev hash after ${GIT_REMOTE_DEV_HASH_AFTER}"
 #~ echo "${GIT_REMOTE_DEV_HASH_AFTER}"
 
-if [ "$GIT_REMOTE_DEV_HASH_AFTER" != "$GIT_REMOTE_DEV_HASH_AFTER" ]
+if [ "$GIT_REMOTE_DEV_HASH_BEFORE" != "$GIT_REMOTE_DEV_HASH_AFTER" ]
 then
     echo "The 'develop' branch is updated!"
     #~ exit 1
