@@ -230,4 +230,9 @@ rm -f ${version_file}
 rm -f ${history_file}
 
 echo "Done!";
+if [ "$TEST_REPO" -eq "1" ]
+then
+        cd /tmp/domotest/mainrepo
+        git log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+fi
 exit 0;
