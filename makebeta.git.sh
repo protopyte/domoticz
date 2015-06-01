@@ -82,8 +82,8 @@ echo "git rem dev hash before ${GIT_REMOTE_DEV_HASH_BEFORE}"
 # for now assume the 'origin' remote is the main github repo
 git fetch origin develop
 
-# get hash of latest commit on the LOCAL develop branch
-# normal users do not use this branch
+# get hash of latest commit on the REMOTE develop branch that is locally available
+# normal users do not use this branch but a local checked-out branch
 GIT_REMOTE_DEV_HASH_AFTER="$(git rev-parse origin/develop)"
 echo "git loc dev hash after ${GIT_REMOTE_DEV_HASH_AFTER}"
 #~ echo "${GIT_REMOTE_DEV_HASH_AFTER}"
