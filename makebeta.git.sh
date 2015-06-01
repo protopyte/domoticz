@@ -72,6 +72,12 @@ then
         cd $DOCUMENT_ROOT
 fi
 #### GIT
+# show the user the origin location
+result=""
+result=$(git remote show origin | grep URL)
+echo "We will be using the GIT remote 'origin':"
+echo $result
+exit 3
 # we will need a working internet connection to make this work!
 # get hash of latest commit on the REMOTE develop branch that is locally available
 GIT_REMOTE_DEV_HASH_BEFORE="$(git rev-parse origin/develop)"
@@ -101,11 +107,12 @@ git_checkout_origin_develop_command="git checkout origin/develop"
 result="$(eval ${git_checkout_origin_develop_command})"
 
 # make sure we are on the correct branch, throw error if not.
+GIT_CURRENT_COMMIT=""
 GIT_CURRENT_COMMIT="$(git rev-parse HEAD)"
 if [ "${GIT_CURRENT_COMMIT}" != "${GIT_REMOTE_DEV_HASH_AFTER}" ]
 then
     echo "I used '${git_checkout_origin_develop_command}' but failed to checkout the  branch!"
-    echo "While there are meany reasons a checkout may fail it's probably due to uncommit changed files. Commit or stash your files and try again."
+    echo "While there are meany reasons a checkout may fail it's probably due to uncommitted changed files. Commit or stash your files and try again."
     exit 1
 fi
 
