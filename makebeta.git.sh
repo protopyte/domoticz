@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # assumes you have:
-# - working internet connection and can contact you 'origin' repo (probably github.com)
+# - working internet connection and can contact your 'origin' repo (probably github.com)
 # - the git remote called 'origin' is used
 # - can be 'test run' by suppling the '-test' argument. This will create repos in '/tmp/domotest'.
 
@@ -112,7 +112,7 @@ GIT_CURRENT_COMMIT="$(git rev-parse HEAD)"
 if [ "${GIT_CURRENT_COMMIT}" != "${GIT_REMOTE_DEV_HASH_AFTER}" ]
 then
     echo "I used '${git_checkout_origin_develop_command}' but failed to checkout the  branch!"
-    echo "While there are meany reasons a checkout may fail it's probably due to uncommitted changed files. Commit or stash your files and try again."
+    echo "While there are manny reasons a checkout may fail it's probably due to uncommitted changed files. Commit or stash your files and try again."
     exit 1
 fi
 
@@ -152,7 +152,7 @@ echo "Generating Archive: ${archive_file}..."
 # go into images folder
 #~ cd $DOCUMENT_ROOT/images
 
-# checkout remote development branch
+# checkout images branch
 git_checkout_images_command="git checkout images"
 result="$(eval ${git_checkout_images_command})"
 
@@ -163,7 +163,7 @@ GIT_LOCAL_IMAGES_HASH="$(git rev-parse images)"
 if [ "${GIT_CURRENT_COMMIT}" != "${GIT_LOCAL_IMAGES_HASH}" ]
 then
     echo "I used '${git_checkout_images_command}' but failed to checkout the branch!"
-    echo "While there are meany reasons a checkout may fail it's probably due to uncommit changed files. Commit or stash your files and try again."
+    echo "While there are manny reasons a checkout may fail it's probably due to uncommit changed files. Commit or stash your files and try again."
     exit 1
 fi
 #########
